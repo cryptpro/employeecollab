@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html class="loading" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Employee Collab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/datepicker3.css')}}" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="{{url_for('static',filename='css/style.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/flat-ui.css')}}" rel="stylesheet">
+
+    <link rel="shortcut icon" href="{{url_for('static',filename='img/favicon.ico')}}">
+    <style>
+    html {
+      -webkit-transition: background-color 1s;
+      transition: background-color 1s;
+  }
+  html, body {
+      /* For the loading indicator to be vertically centered ensure */
+      /* the html and body elements take up the full viewport */
+      min-height: 100%;
+  }
+  html.loading {
+      /* Replace #333 with the background-color of your choice */
+      /* Replace loading.gif with the loading image of your choice */
+      background: #333 url('loading.gif') no-repeat 50% 50%;
+
+      /* Ensures that the transition only runs in one direction */
+      -webkit-transition: background-color 0;
+      transition: background-color 0;
+  }
+  body {
+      -webkit-transition: opacity 1s ease-in;
+      transition: opacity 1s ease-in;
+  }
+  html.loading body {
+      /* Make the contents of the body opaque during loading */
+      opacity: 0;
+
+      /* Ensures that the transition only runs in one direction */
+      -webkit-transition: opacity 0;
+      transition: opacity 0;
+  }
+    </style>
+    <script type="text/javascript">
+    document.getElementsByTagName( "html" )[0].classList.remove( "loading" );
+
+// All browsers
+document.getElementsByTagName( "html" )[0].className.replace( /loading/, "" );
+
+// Or with jQuery
+$( "html" ).removeClass( "loading" );
+</script>
+  </head>
+  <body>
+
+
+    <!-- Static navbar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top {% block navbarsize %} navbar-lg {% endblock %} navbar-embossed" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-9">
+              <span class="sr-only">Emp Collab</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/wall">Employee Network</a>
+            
+          </div>
+          
+          <div class="navbar-collapse collapse" id="navbar-collapse-9">
+            {% block navright %}
+            <form class="navbar-form navbar-right" id="formlogin" method="post" role="form">
+              <div class="form-group">
+                <input type="text" placeholder="Email" id="txtusername" name="txtusername" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Password" id="txtuserpassword" name="txtuserpassword" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+              <br>
+              <small class="text-danger" id="loginwarn"></small>
+            </form>
+            {% endblock %}
+          </div><!--/.navbar-collapse -->
+        </div>
+      </nav>
+
+
+    <div class="container container-pad">
+      <br>
+    {% block container %}
+
+      <div class="row">
+        
+        <div class="col-md-7" style="padding-top:20px;">
+          
+          <div class="row">
+            <div class="col-md-3">
+              <img src="{{ url_for('static',filename='img/icons/svg/pencils.svg')}}" alt="Collaborate">
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li>Build your personal profile.</li>
+                <li>Collaborate with employees.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <hr>
+
+          <div class="row">
+            <div class="col-md-3">
+              <img src="{{ url_for('static',filename='img/icons/svg/mail.svg')}}" alt="Collaborate">
+            </div>
+            <div class="col-md-6">
+              <br>
+              <ul>
+                <li>Send private messages to people in your network.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <hr>
+
+          <div class="row">
+            <div class="col-md-3">
+              <img src="{{ url_for('static',filename='img/icons/svg/book.svg')}}" alt="Collaborate">
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li>Share content in your network.</li>
+                <li>Customized sharing.</li>
+                <li>Upload files.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-4">
+          Register
+          <hr>
+          <form id="formregister" method="post">
+            <div class="form-group">
+              <label class="control-label" for="txtfname">First name</label>
+              <input type="text" class="form-control" name="txtfname" id="txtfname" required>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="txtlname">Last name</label>
+              <input type="text" class="form-control" name="txtlname" id="txtlname" required>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="txtemail">Email</label>
+              <input type="text" class="form-control" name="txtemail" id="txtemail" required>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="radiomale">Gender</label>
+              <label class="radio" for="radiomale">
+                <input type="radio" name="radiogender" data-toggle="radio" value="1" id="radiomale" required="" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                 Male
+              </label>
+              <label class="radio" for="radiofemale">
+                <input type="radio" name="radiogender" data-toggle="radio" value="2" id="radiofemale" required="" class="custom-radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                 Female
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="txtpassword">Password</label>
+              <input type="password" class="form-control" name="txtpassword" id="txtpassword" required>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="txtrepassword">Re-enter Password</label>
+              <input type="password" class="form-control" name="txtrepassword" id="txtrepassword" required>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary col-md-12" id="btnregister">Register</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    {% endblock %}
+    {% block dialog %}
+      <div id="msg-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <!-- MODAL HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Send message</h4>
+            </div>
+            <!-- /MODAL HEADER -->
+            <!-- MODAL BODY -->
+            <div class="modal-body" style="padding:20px">
+              <span class="text-muted" id="totext"></span>
+              <br><br>
+              <textarea class="form-control" id="txtmsg" rows="7" required></textarea>
+            </div>
+            <!-- /MODAL BODY -->
+
+            <hr>
+            <div style="padding:20px">
+            <button type="button" class="btn btn-primary pull-right mr10" id="btnsendmsg">Send</button>
+            <button type="button" class="btn btn-default pull-left mr10" data-dismiss="modal">Close</button>
+          </div>
+          <br><br>
+            <div class="clearfix mb10"></div>
+          
+          </div>
+        </div>
+      </div>
+    {%endblock%}
+    </div> <!-- /container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static',filename='js/lib/jquery.min.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static',filename='js/lib/bootstrap-datepicker.js')}}"></script>
+
+    <script src="{{ url_for('static',filename='js/lib/flat-ui.min.js')}}"></script>
+
+    <script src="{{ url_for('static',filename='js/lib/application.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/lib/video.js')}}"></script>
+    {% block scripts %}
+    <script src="{{ url_for('static',filename='js/footer.js')}}"></script>
+    {% endblock %}
+  </body>
+</html>

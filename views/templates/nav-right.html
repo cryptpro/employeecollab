@@ -1,0 +1,14 @@
+<form id="searchform" action="/search" method="GET">
+    <div class="form-group col-md-3" style="padding-top:13px;">
+        <input type="text" name="query" class="form-control input-sm" placeholder="Search..." required>
+    </div>
+</form>
+<form class="navbar-form navbar-right" style="padding-top:15px;">
+    <div class="col-md-5">
+        <span class="text-warning txt_wall_first_name">{{user["first_name"]|title}}</span>
+    </div>
+
+    <div class="col-md-5">
+        <a href="/logout">logout</a>
+    </div>
+</form>

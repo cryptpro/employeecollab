@@ -1,0 +1,53 @@
+{% for user_data in results %}
+{% if user_data["user_id"] != user["user_id"] %}
+<div class="row">
+    <div class="col-md-3">
+            <img alt="140x140" class="img-circle" data-holder-rendered="true"
+            src="{{url_for('static',filename='uploads/'+user_data['profile_pic'])}}"
+            style="width: 100px; height: 100px;"><br>
+    </div>
+    <div class="col-md-6">
+        <div class="row text-info">
+            <div class="col-md-6"><h5><a href="/profile/{{user_data['user_id']}}">{{ user_data["first_name"]|title }} {{ user_data["last_name"]|title }}</a></h5></div>
+            {% if not user_data['friendship'] %}
+                <div class="col-md-3" style="padding-top:10px;"><button profile_id="{{user_data['user_id']}}" class="btn btn-primary btn-sm btnaddfriend">Add friend</button></div>
+            {% endif %}
+            {% if "friend_requests" in user_data['friendship'] %}
+                <div class="col-md-3" style="padding-top:10px;"><button request_id="{{user_data['friendship']['friend_requests']['request_id']}}" class="btn btn-warning btn-sm btncancel">Cancel</button></div>
+            {% endif %}
+            {% if "confirm_request" in user_data['friendship'] %}
+                <div class="col-md-6" style="padding-top:10px;"><button request_id="{{user_data['friendship']['confirm_request']['request_id']}}" profile_id="{{user_data['user_id']}}" class="btn btn-success btn-sm btnconfirm">Confirm</button>&nbsp;<button request_id="{{user_data['friendship']['confirm_request']['request_id']}}" profile_id="{{user_data['user_id']}}" class="btn btn-danger decline btn-sm">Decline</button></div>
+            {% endif %}
+            {% if "unfriend" in user_data['friendship'] %}
+                <div class="col-md-3" style="padding-top:10px;"><button profile_id="{{user_data['user_id']}}" class="btn btn-danger btn-sm btnunfriend">Unfriend</button></div>
+            {% endif %}
+            <div class="col-md-3" style="padding-top:10px;">
+                <button user_id="{{user_data['user_id']}}" first_name="{{user_data['first_name']}}" class="btn btn-success btn-sm sendmsg"> Message </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <span class="text-muted">Birthday &nbsp;</span>
+                {{ user_data["date_of_birth"] }}
+            </div>
+            <div class="col-md-6">
+                <span class="text-muted">Location &nbsp;</span>
+                Not specified
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <span class="text-muted">Email &nbsp;</span>
+                {{ user_data["email_id"] }}
+            </div>
+            <div class="col-md-6">
+                <span class="text-muted">Since: &nbsp;</span>
+                {{ user_data["join_date"] }}
+            </div>
+        </div>
+
+    </div>
+</div>
+<hr>
+{% endif %}
+{% endfor %}

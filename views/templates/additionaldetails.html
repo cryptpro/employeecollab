@@ -1,0 +1,44 @@
+{% extends 'master.html' %} 
+{% block navbarsize %}
+{% endblock %} 
+{% block navright %}
+{% include "nav-right.html" %}
+{% endblock %}
+
+{% block container %}
+ <form id="formeditprofile" method="get" action="/saveadditional" role="form">
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <h6>School:</h6>
+        <br>
+        <input type="text" class="form-control" name="txtuniversity" id="txtuniversity" required>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <h6>University:</h6>
+        <br>
+        <input type="text" class="form-control" name="txtjob" id="txtjob" required>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <h6>Job:</h6>
+        <br>
+        <input type="text" class="form-control" name="txtschool" id="txtschool" required>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <button class="btn btn-primary" type="submit">Save and proceed </button>
+    </div>
+</div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static',filename='js/app.js')}}"></script>
+{% endblock %}

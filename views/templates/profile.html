@@ -1,0 +1,119 @@
+{% extends 'master.html' %} 
+{% block navbarsize %}
+{% endblock %} 
+{% block navright %}
+{% include "nav-right.html" %}
+{% endblock %}
+
+{% block container %}
+
+<div class="col-md-8">
+    <div class="row">
+        {% if user["user_id"]==user_data["user_id"]%}
+        <div class="col-md-4">
+            <img id="imgprofilepic" alt="140x140" class="img-circle" data-holder-rendered="true"
+            src="{{url_for('static',filename='uploads/'+user_data['profile_pic'])}}"
+            style="width: 140px; height: 140px;"><br>
+            <a href="#" id="changephoto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; change
+            photo</a>
+            <form method="post" id="formchangephoto">
+                <input name="picupload" id="picupload"
+                        style="display:none;" type="file">
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div class="row text-info">
+                <h5>{{ user_data["first_name"]|title }} {{ user_data["last_name"]|title }}</h5>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="text-muted">Birthday &nbsp;</span>
+                    {{ user_data["date_of_birth"] }}
+                </div>
+                <div class="col-md-6">
+                    <span class="text-muted">Location &nbsp;</span>
+                    Not specified
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="text-muted">Email &nbsp;</span>
+                    {{ user_data["email_id"] }}
+                </div>
+                <div class="col-md-6">
+                    <span class="text-muted">Since: &nbsp;</span>
+                    {{ user_data["join_date"] }}
+                </div>
+            </div>
+            
+
+        </div>
+        {% else %}
+        <div class="col-md-4">
+            <img id="imgprofilepic" alt="140x140" class="img-circle" data-holder-rendered="true"
+            src="{{url_for('static',filename='uploads/'+user_data['profile_pic'])}}"
+            style="width: 140px; height: 140px;"><br>
+        </div>
+        <div class="col-md-8">
+            <div class="row text-info">
+                <div class="col-md-6"><h5>{{ user_data["first_name"]|title }} {{ user_data["last_name"]|title }}</h5></div>
+                {% if not friendship %}
+                <div class="col-md-3" style="padding-top:10px;"><button profile_id="{{user_data['user_id']}}" class="btn btn-primary btn-sm btnaddfriend">Add friend</button></div>
+                {% endif %}
+                {% if "friend_requests" in friendship %}
+                <div class="col-md-3" style="padding-top:10px;"><button request_id="{{friendship['friend_requests']['request_id']}}" class="btn btn-warning btn-sm btncancel">Cancel</button></div>
+                {% endif %}
+                {% if "confirm_request" in friendship %}
+                <div class="col-md-6" style="padding-top:10px;"><button request_id="{{friendship['confirm_request']['request_id']}}" profile_id="{{user_data['user_id']}}" class="btn btn-success btn-sm btnconfirm">Confirm</button>&nbsp;<button request_id="{{friendship['confirm_request']['request_id']}}" profile_id="{{user_data['user_id']}}" class="btn btn-danger decline btn-sm">Decline</button></div>
+                {% endif %}
+                {% if "unfriend" in friendship %}
+                <div class="col-md-3" style="padding-top:10px;"><button profile_id="{{user_data['user_id']}}" class="btn btn-danger btn-sm btnunfriend">Unfriend</button></div>
+                {% endif %}
+                <div class="col-md-3" style="padding-top:10px;">
+                <button user_id="{{user_data['user_id']}}" first_name="{{user_data['first_name']}}" class="btn btn-success btn-sm sendmsg"> Message </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="text-muted">Birthday &nbsp;</span>
+                    {{ user_data["date_of_birth"] }}
+                </div>
+                <div class="col-md-6">
+                    <span class="text-muted">Location &nbsp;</span>
+                    Not specified
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="text-muted">Email &nbsp;</span>
+                    {{ user_data["email_id"] }}
+                </div>
+                <div class="col-md-6">
+                    <span class="text-muted">Since: &nbsp;</span>
+                    {{ user_data["join_date"] }}
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+    </div>
+    <hr><br>
+    <div id="pre_post"></div>
+    {% include "posts.html" %}
+    <div id="post_post"></div>
+</div>
+<div class="col-md-4">
+    <b>Friends:</b>
+    <hr>
+    <div class="shaodw">
+        {% for frnd in frnds %}
+            <a href="/profile/{{frnd['user_id']}}">{{frnd["first_name"]}} {{frnd["last_name"]}}</a>
+            <br>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static',filename='js/app.js')}}"></script>
+{% endblock %}

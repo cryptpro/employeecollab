@@ -1,0 +1,176 @@
+{% extends 'master.html' %} 
+{% block navbarsize %}
+{% endblock %} 
+{% block navright %}
+{% include "nav-right.html" %}
+{% endblock %}
+
+{% block container %}
+
+<div class="col-md-8">
+    <div class="row shaodw">
+        <form id="formpost" method="post" enctype="multipart/form-data">
+            <div class="row" style="padding-bottom:10px;">
+                <div class="col-md-4">
+                    <label class="control-label fui-new" for=
+                    "txttitle">&nbsp;write content</label>
+                </div>
+
+                <div class="col-md-3">
+                    <span class="fui-clip">&nbsp;<label id=
+                    "linkupload">upload</label></span> <input name="fileupload" id="fileupload"
+                    style="display:none;" type="file">
+                </div>
+                <div class="col-md-4" style="padding-top:8px;"><span class="text-muted" id="uploadedpic"></span></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <textarea class="form-control" name="txttitle" id="txttitle" placeholder=
+                    "Write something here..." rows="2" required></textarea><br>
+                    <textarea class="form-control" name="txtcontent" id="txtcontent" placeholder=
+                    "Write optional description here..." rows="3"></textarea>
+                </div>
+            </div><br>
+
+            <div class="row" style="padding-bottom:10px;">
+                <div class="col-md-4">
+                    
+                    <select class="col-md-2 form-control select select-default select2-offscreen"
+                    data-toggle="select" name="selectvisibility" tabindex="-1" title="">
+                         <option value="1" {% if user["post_visibility_id"] == "1" %}selected{%endif%}>
+                            Friends
+                        </option>
+
+                        <option value="2" {% if user["post_visibility_id"] == "2" %}selected{%endif%}>
+                            Friends of Friends
+                        </option>
+
+                        <option value="3" {% if user["post_visibility_id"] == "3" %}selected{%endif%}>
+                            Everyone
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2" style="padding-top:8px;">
+                    <span class="text-muted" active="1" id="iconlocation"><img style="height:25px;width:20px;" src="{{url_for('static', filename='img/location.png' )}}">&nbsp;Location</img></span>
+                </div>
+                <div class="col-md-5 pull-right">
+                    <button type="submit" class="btn btn-primary btn-sm pull-right">&nbsp;Post</button>
+                </div>
+            </div>
+            <div class="row" style="padding:20px;" id="location">
+                <span class="text-muted text-sm" id="spanlocation"></span>
+            </div>
+        </form>
+    </div><br>
+
+    <div id="pre_post"></div>
+
+    {% include "posts.html" %}
+
+    <div id="post_post"></div>
+</div>
+
+<div class="col-md-4" style="padding-left:100px">
+        <a href="/profile/{{user['user_id']}}"><img id="imgprofilepic" alt="140x140" class="img-circle" data-holder-rendered="true"
+        src="{{url_for('static',filename='uploads/'+user['profile_pic'])}}"
+        style="width: 140px; height: 140px;"></a><br>
+        <a href="#" id="changephoto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; change
+        photo</a>
+        <form method="post" id="formchangephoto">
+            <input name="picupload" id="picupload"
+                    style="display:none;" type="file">
+        </form>
+        <hr>
+        <b>Profile</b><br><br>
+            <span class="text-muted">First name</span><br>
+
+              <div class="input-group">
+                <input class="form-control" type="text" col-type="first_name" placeholder="{{user['first_name']}}">
+                <span class="input-group-addon edit_details"><span class="glyphicon glyphicon-pencil"></span></span>
+              </div><br>
+            <span class="text-muted">Last name</span><br>
+
+              <div class="input-group">
+                <input class="form-control" type="text" col-type="last_name" placeholder="{{user['last_name']}}">
+                <span class="input-group-addon edit_details"><span class="glyphicon glyphicon-pencil"></span></span>
+              </div><br>
+            <span class="text-muted">Date of birth</span><br>
+
+              <div class="input-group datepick">
+                <input class="form-control" type="text" col-type="date_of_birth" placeholder="{{user['date_of_birth']}}">
+                <span class="input-group-addon edit_details"><span class="glyphicon glyphicon-pencil"></span></span>
+              </div>
+              <br>
+              <a class="btn btn-default btn-sm" href="/editprofile">Edit Additional Information </a>
+        <br>
+        <hr>
+        <b>Privacy</b><br><br>
+            <span class="text-muted">Friends List</span><br>
+            <select class="form-control select select-default select2-offscreen editfriendsvisibility"
+        data-toggle="select" name="editvisibility" tabindex="-1" title="">
+                <option value="1" {% if user["friends_visibility_id"] == "1" %}selected{%endif%}>
+                    Friends
+                </option>
+
+                <option value="2" {% if user["friends_visibility_id"] == "2" %}selected{%endif%}>
+                    Friends of Friends
+                </option>
+
+                <option value="3" {% if user["friends_visibility_id"] == "3" %}selected{%endif%}>
+                    Everyone
+                </option>
+            </select><br><br>
+            <span class="text-muted">Posts</span><br>
+            <select class="form-control select select-default select2-offscreen editpostsvisibility"
+        data-toggle="select" name="editvisibility" tabindex="-1" title="">
+                <option value="1" {% if user["post_visibility_id"] == "1" %}selected{%endif%}>
+                    Friends
+                </option>
+
+                <option value="2" {% if user["post_visibility_id"] == "2" %}selected{%endif%}>
+                    Friends of Friends
+                </option>
+
+                <option value="3" {% if user["post_visibility_id"] == "3" %}selected{%endif%}>
+                    Everyone
+                </option>
+            </select>
+        <hr><br>
+        <b>Friend requests</b>
+        <div class="row shaodw">
+            {% for request in requests %}
+            <br>
+            <div class="divrequests">
+                <a href="/profile/{{request['from_id']}}" class="text-info">{{request["first_name"]}} {{request["last_name"]}}</a> <br>
+                <button request_id="{{request['request_id']}}" profile_id="{{request['from_id']}}" class="btn btn-success btn-sm btnconfirm">Confirm</button>&nbsp;
+                <button request_id="{{request['request_id']}}" profile_id="{{request['to_id']}}" class="btn btn-danger decline btn-sm">Decline</button>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+        <hr><br>
+
+        <b>Messages</b><br><br>
+        <div class="shaodw">
+        {% for msg in msgs %}
+            <br>
+            <div class="divmsg">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <a href="/profile/{{msg['from_id']}}" class="text-info">{{msg["first_name"]|title}} {{msg["last_name"]|title}}</a>
+                    </span>
+                    <span class="input-group-addon togmsg">{{msg["msg"][:8]}}...</span>
+                </div>
+                <blockquote class="msgcontent" style="display:none;">
+                    {{msg["msg"]}}
+                </blockquote>
+            </div>
+            <br>
+        {% endfor %}
+        </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static',filename='js/app.js')}}"></script>
+{% endblock %}

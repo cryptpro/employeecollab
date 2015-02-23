@@ -1,0 +1,106 @@
+{% for post in posts %}
+<div id="{{ post['post_id'] }}" class="row shaodw">
+	<div class="row" style="padding-left:20px;">
+			<a href="profile/{{post['user_id']}}" class="text-info">{{ post["first_name"]|title }} {{ post["last_name"] }}</a>
+		{% if post["location"] %}
+			&nbsp;at&nbsp;<small><em class="text-muted"> {{post["location"]}} </em></small>
+		{% endif %}
+	</div>
+	<div class="row" style="padding-left:20px;">
+			<small><em class="text-muted">{{ post["posted_when"].strftime("%a, %b %d, %Y %H:%M %p") }}</em></small>
+	</div>
+	<hr>
+	<div class="row" style="padding-left:20px;padding-right:0px;">
+		<b>{{ post["title"] }}</b><br>
+		<div style="padding-left:20px;">
+			<blockquote class="padding-right:20px;">
+				{% if post["upload"] != "None" %}
+					{% if post["upload"][-3:] == "mp4"%}
+						<video width="400" height="250" controls>
+						  <source src="{{ url_for('static',filename='uploads/') }}{{post['upload']}}" type="video/mp4">
+						Your browser does not support the video tag.
+						</video>
+						<br>
+					{% elif  post["upload"][-3:] == "mp3" %}
+					<audio controls>
+						  <source src="{{ url_for('static',filename='uploads/') }}{{post['upload']}}" type="audio/mp3">
+						Your browser does not support the video tag.
+						</audio>
+						<br>
+					{% else %}
+					<img style="max-height:400px; max-width:600px;" src="{{ url_for('static',filename='uploads/') }}{{post['upload']}}" data-holder-rendered="true" >
+					<br>
+					{% endif %}
+				{% endif %}
+				{{ post["content"] }}
+
+			</blockquote>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			{% if post['likes']|length > 0 %}
+				{% set likes_num = '(' +post['likes']|length|string + ')' %}
+			{% else %}
+				{% set likes_num = '' %}
+			{% endif %}
+			{% if user["user_id"] in post['likes'].keys() %}
+			{% set like_text = "Unlike" %}
+			{% set class_text = "unlike" %}
+			{% else %}
+			{% set like_text = "Like" %}
+			{% set class_text = "like" %}
+			{% endif %}
+			<small><a data-toggle="tooltip" data-html="true" href="#" data-original-title="
+				{% for like in post['likes'].iterkeys() %}
+					{{post['likes'][like]+'<br>'}}
+				{% endfor %}
+				" class="text-info alike" type="{{class_text}}">{{likes_num}} {{like_text}}</a></small>
+		</div>
+		<div class="col-md-2" 
+			<small><a href="#" class="text-info acomment">Comment</a></small>
+		</div>
+	</div>
+	<br>
+	<div class="divcomments" style="display:none;padding:20px;">
+	{% for comment in post["comments"] %}
+	<div class="row" id="{{comment['comment_id']}}" style="background-color:#f5f5f5;">
+				<div class="col-md-9" style="padding-left:30px;">
+					{% if comment['likes']|length > 0 %}
+						{% set comments_num = '(' +comment['likes']|length|string + ')' %}
+					{% else %}
+						{% set comments_num = '' %}
+					{% endif %}
+					{% if user["user_id"] in comment['likes'].keys() %}
+					{% set comment_text = "Unlike" %}
+					{% set c_class_text = "unlike" %}
+					{% else %}
+					{% set comment_text = "Like" %}
+					{% set c_class_text = "like" %}
+					{% endif %}
+					<a href="#" class="text-info">{{ comment["first_name"]|title }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					{{comment["content"]}} &nbsp;&nbsp;&nbsp;&nbsp;<small><em class="text-warning">{{comment["commented_when"].strftime("%a, %b %d, %Y %H:%M %p")}}</em></small>
+					<br>
+					<small><a href="#" data-toggle="tooltip" data-html="true" href="#" data-original-title="
+				{% for cmt in comment['likes'].iterkeys() %}
+					{{comment['likes'][cmt]+'<br>'}}
+				{% endfor %}
+				" class="acommentlike" type="{{c_class_text}}">{{comments_num}} {{comment_text}}</a></small>
+				</div>
+			<br>
+			<hr>
+	</div>
+	{% endfor %}
+	</div>
+	<div class="row divcomment" style="display:none;">
+		<form class="formcomment" method="post">
+				<div class="col-md-9">
+					<textarea rows="2" post_id="{{post['post_id']}}" name="txtcomment" type="text" class="form-control txtcomment" required></textarea>
+				</div>
+				<div class="col-md-2" style="margin-top: auto;margin-bottom: auto;">
+					<button class="btn btn-primary btn-sm pull-right">Comment</button>
+				</div>
+		</form>
+	</div>
+</div>
+{% endfor %}

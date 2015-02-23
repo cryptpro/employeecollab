@@ -1,0 +1,29 @@
+.container-pad{
+	padding-top:80px;
+	padding-right:50px;
+	padding-left:50px;
+	padding-bottom:30px;
+	font-size: smaller;
+}
+
+.shaded{
+	background-color: rgb(238, 241, 231);
+	padding-top: 5px;
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-bottom: 5px;
+}
+
+
+.shaodw{
+  border: solid 1px #d3d3d3;
+  box-shadow: 0 0 15px #999;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  color: #807E7E;
+  padding-top: 5px;
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-bottom: 5px;
+}
